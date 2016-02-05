@@ -74,3 +74,30 @@ class Queues(generic.View):
         response = {'name': new_queue.name,
                     'metadata': new_queue._metadata}
         return rest_utils.CreatedResponse(location, response)
+
+
+@urls.register
+class Subscriptions(generic.View):
+    """API for queues"""
+    url_regex = r'zaqar/subscriptions/(?P<queue_name>.*)/$'
+
+    @rest_utils.ajax()
+    def get(self, request, queue_name):
+        """Get a list of the Subscriptions for a queue."""
+        return zaqar.subscription_list(request, queue_name)
+
+    @rest_utils.ajax(data_required=True)
+    def delete(self, request):
+        """Delete one or more queue by name.
+
+        Returns HTTP 204 (no content) on successful deletion.
+        """
+        pass
+
+    @rest_utils.ajax(data_required=True)
+    def put(self, request):
+        """Create a new queue.
+
+        Returns the new queue object on success.
+        """
+        pass

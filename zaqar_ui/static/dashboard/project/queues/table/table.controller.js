@@ -45,6 +45,8 @@
     //ctrl.getItemActions = typeRegistry.getItemActionsFunction(imageResourceType);
     ctrl.batchActions = registry.getBatchActionsFunction(type);
 
+    ctrl.subscriptions = {};
+
     init();
     initScope();
 
@@ -57,6 +59,7 @@
         createWatcher();
         deleteWatcher();
       })
+      $scope.$on('hzTable:rowExpanded', getSubscriptionsByName)
     }
 
     //////////
@@ -64,6 +67,15 @@
     function init() {
       registry.initActions(type, $scope);
       zaqar.getQueues().success(getQueuesSuccess);
+    }
+
+    function getSubscriptionsByName(event, args) {
+      var queue_name = args['row'].text().trim().split(' ')[0].trim();
+      zaqar.getSubscriptions(queue_name).success(onSubscriptionGetSuccess);
+
+      function onSubscriptionGetSuccess(response) {
+        ctrl.subscriptions[queue_name] = response;
+      }
     }
 
     function getQueuesSuccess(response) {
@@ -90,6 +102,7 @@
           ctrl.queuesSrc.splice(i, 1);
         }
       }
+
       // clear selections upon deletion
       $scope.$emit('hzTable:clearSelected');
     }

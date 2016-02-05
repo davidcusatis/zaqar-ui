@@ -36,6 +36,7 @@
       <th class="rsp-p2" st-sort="metadata" translate>Claimed Messages</th>
       <th class="rsp-p2" st-sort="metadata" translate>Free Messages</th>
       <th class="rsp-p2" st-sort="metadata" translate>Total Messages</th>
+      <!--<th class="rsp-p2" st-sort="metadata" translate>Subscriptions</th>-->
     </tr>
   </thead>
   <tbody>
@@ -65,10 +66,10 @@
       <td class="rsp-p2">{$ q.claimed $}</td>
       <td class="rsp-p2">{$ q.free $}</td>
       <td class="rsp-p2">{$ q.total $}</td>
+      <!--<td class="rsp-p2">{$ q.subscriptions.length $}</td>-->
 
     </tr>
     <tr ng-repeat-end class="detail-row">
-
       <!--
         Table-row-details:
         Provides detail view of specific view, with more information than can be
@@ -111,6 +112,46 @@
           </dl>
 
         </div>
+        <div class="row">
+          <!-- Important metadata should go here and table header.
+            It will appear in the table above if there is room, otherwise
+            it will appear in the drawer when user resizes the window.
+          -->
+          <span class="rsp-alt">
+            <dl class="col-sm-2">
+              <dt translate>Subscriber</dt>
+            </dl>
+            <dl class="col-sm-2">
+              <dt translate>Source</dt>
+            </dl>
+            <dl class="col-sm-2">
+              <dt translate>Time to Live</dt>
+            </dl>
+            <dl class="col-sm-2">
+              <dt translate>Options</dt>
+            </dl>
+          </span>
+        </div>
+        <!--<div ng-repeat="sub in table.getSubscriptions(q.name) track by sub.subscriber" class="row">-->
+        <!-- below is what i want, but this method above needs to get called first so subs are populated -->
+        <span>{$ table.subscriptions[q.name] $}</span>
+        <div ng-repeat="sub in table.susbscriptions[q.name] track by sub.subscriber" class="row">
+          <span class="rsp-alt">
+            <dl class="col-sm-2">
+              <dd>{$ sub.subscriber $}</dd>
+            </dl>
+            <dl class="col-sm-2">
+              <dd>{$ sub.queue_name $}</dd>
+            </dl>
+            <dl class="col-sm-2">
+              <dd>{$ sub.ttl $}</dd>
+            </dl>
+            <dl class="col-sm-2">
+              <dd>{$ sub.options $}</dd>
+            </dl>
+          </span>
+        </div>
+
       </td>
     </tr>
 

@@ -82,8 +82,9 @@ def queue_get(request, queue_name):
     return zaqarclient(request).queue(queue_name, auto_create=False)
 
 
-def queue_subscribe(request, subscriber, ttl=None, options={}):
-    # Popup a modal form, user can input subscriber, ttl and options to
-    # subscribe the queue.
-    # subscriber could be an URL or email address.
-    pass
+def subscription_list(request, queue_name):
+    return [{'subscriber': s.subscriber,
+             'ttl': s.ttl,
+             'queue_name': s.queue_name,
+             'options': s.options}
+            for s in zaqarclient(request).subscriptions(queue_name)]

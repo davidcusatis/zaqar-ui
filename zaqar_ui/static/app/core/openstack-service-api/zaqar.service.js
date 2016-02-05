@@ -30,7 +30,8 @@
     var service = {
       getQueues: getQueues,
       createQueue: createQueue,
-      deleteQueue: deleteQueue
+      deleteQueue: deleteQueue,
+      getSubscriptions: getSubscriptions
     };
 
     return service;
@@ -45,14 +46,18 @@
     }
 
     function createQueue(newQueue) {
-      return apiService.put('/api/zaqar/queues/', newQueue)
-        .error(function() {
-          toastService.add('error', gettext('Unable to create the queue.'));
-        });
+        return apiService.put('/api/zaqar/queues/', newQueue)
+            .error(function () {
+                toastService.add('error', gettext('Unable to create the queue.'));
+            });
     }
 
     function deleteQueue(queueName) {
       return apiService.delete('/api/zaqar/queues/', [queueName]);
+    }
+
+    function getSubscriptions(queueName) {
+      return apiService.get('/api/zaqar/subscriptions/' + queueName);
     }
   }
 
