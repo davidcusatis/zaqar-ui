@@ -76,3 +76,34 @@ class Queues(generic.View):
         return rest_utils.CreatedResponse(
             '/api/messaging/queues/%s' % new_queue.name,
             new_queue.to_dict())
+
+
+@urls.register
+class Subscriptions(generic.View):
+    """API for Subscriptions
+    """
+    url_regex = r'zaqar/subscriptions/$'
+
+    @rest_utils.ajax()
+    def get(self, request):
+        """Get a list of the Subscriptions for a project.
+
+        The returned result is an object with property 'queue',
+        which is the queue name, and 'subscription', which is
+        the subscription details for each queue.
+        """
+        queues = zaqar.queue_list(request)
+        subscriptions = []
+        for queue in queues:
+            sub = zaqar.subscription_list(request, queue.name)
+            subscriptions.append({'queue': queue.name,
+                                  'subscription': sub})
+        return subscriptions
+
+    @rest_utils.ajax(data_required=True)
+    def delete(self, request):
+        pass
+
+    @rest_utils.ajax(data_required=True)
+    def create(self, request):
+        pass

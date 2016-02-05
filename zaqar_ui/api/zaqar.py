@@ -90,4 +90,8 @@ def queue_subscribe(request, subscriber, ttl=None, options={}):
 
     subscriber could be an URL or email address.
     """
-    pass
+    sub = zaqarclient(request).subscriber()
+    return sub.subscribe(request['queue'], subscriber, ttl, options)
+
+def subscription_list(request, subscriber):
+    return subscriber.channels

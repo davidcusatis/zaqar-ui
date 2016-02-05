@@ -28,7 +28,8 @@
 
   function ZaqarAPI(apiService, toastService) {
     var service = {
-      getQueues: getQueues
+      getQueues: getQueues,
+      getSubscriptions: getSubscriptions
     };
 
     return service;
@@ -40,6 +41,13 @@
         .error(function() {
           toastService.add('error', gettext('Unable to retrieve the Queues.'));
         });
+    }
+
+    function getSubscriptions() {
+        return apiService.get('/api/zaqar/subscriptions/')
+            .error(function(){
+                toastService.add('error', gettext('Unable to retrieve Subscriptions.'));
+            });
     }
 
   }
